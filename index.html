@@ -228,6 +228,16 @@ h2,.name,.eyebrow,.champ-name,.g-over h3,.g-over .rank,.env-title,.mini{font-fam
 .float.red{color:var(--kat);text-shadow:0 0 16px var(--kat),0 3px 0 #000}
 .float.blue{color:#fff;text-shadow:0 0 18px #1f5fff,0 3px 0 #0033a0}
 .disclaimer{display:block;margin-top:14px;font-size:12px;opacity:.7}
+.sky.crest{background:none;box-shadow:none;cursor:pointer}
+.crest img{position:absolute;inset:0;width:100%;height:100%;filter:drop-shadow(0 0 26px rgba(31,95,255,.55))}
+.crest img.depth{filter:brightness(.3) sepia(1) hue-rotate(185deg) saturate(3)}
+.crest.tw{animation:coin .8s cubic-bezier(.16,1,.3,1)}
+@keyframes coin{50%{scale:1.12}}
+.gate{background:linear-gradient(rgba(4,6,14,.5),rgba(4,6,14,.92)),url(assets/yasuo-splash.jpg) center 25%/cover}
+.gate svg{display:none}
+#champs{position:relative;overflow:hidden}
+#champs .hero-art{opacity:.16}
+#qbtn img{width:22px;height:22px;vertical-align:middle;border-radius:4px;margin-right:6px}
 
 @media (prefers-reduced-motion:reduce){
   .floor,.gate svg,.slot,.env-hint{animation:none}
@@ -264,7 +274,7 @@ h2,.name,.eyebrow,.champ-name,.g-over h3,.g-over .rank,.env-title,.mini{font-fam
 <main>
   <!-- HERO -->
   <section id="hero" class="hero3d">
-    <div class="hero-art" id="heroArt"></div>
+    <div class="hero-art" style="background-image:url(assets/yasuo-splash.jpg)"></div>
     <div class="floor"></div>
     <div class="eyebrow">Feliz aniversário</div>
     <div class="name-wrap" id="nameWrap"><h1 class="name" id="name"></h1></div>
@@ -279,6 +289,7 @@ h2,.name,.eyebrow,.champ-name,.g-over h3,.g-over .rank,.env-title,.mini{font-fam
 
   <!-- CAMPEÕES -->
   <section id="champs">
+    <div class="hero-art" style="background-image:url(assets/katarina-splash.jpg)"></div>
     <h2>Seleção de <span class="accent">Campeões</span></h2>
     <p class="sub">A dupla mais caótica da Fenda: zero controle de grupo, 100% de confiança. Toque nas habilidades.</p>
     <div class="champ-grid" id="champGrid"></div>
@@ -313,7 +324,7 @@ h2,.name,.eyebrow,.champ-name,.g-over h3,.g-over .rank,.env-title,.mini{font-fam
         <div><small>Q stacks</small><div class="stacks" id="gStacks"><i></i><i></i></div></div>
         <div style="text-align:right"><small>Tempo</small><b id="gTime">30</b></div>
       </div>
-      <button class="btn" id="qbtn" disabled>Q3 · Tornado</button>
+      <button class="btn" id="qbtn" disabled><img src="assets/yasuo-q3.png" alt="">Q3 · Tornado</button>
       <div class="g-over" id="gOver">
         <div id="gOverInner">
           <h3>Minions no aniversário</h3>
@@ -343,16 +354,8 @@ h2,.name,.eyebrow,.champ-name,.g-over h3,.g-over .rank,.env-title,.mini{font-fam
   <!-- CRUZEIRO -->
   <section id="cabuloso" class="cab">
     <h2>E é claro: <span class="blue">Cruzeiro</span></h2>
-    <p class="sub">Porque aniversário de cruzeirense sem a Raposa não vale. Toque nas estrelas do Cruzeiro do Sul.</p>
-    <div class="stars3d"><div class="sky" id="sky">
-      <svg class="crest-ring" viewBox="0 0 300 300" aria-hidden="true">
-        <defs><path id="ringPath" d="M150,150 m-128,0 a128,128 0 1,1 256,0 a128,128 0 1,1 -256,0"/></defs>
-        <circle cx="150" cy="150" r="140" fill="none" stroke="#fff" stroke-width="22"/>
-        <circle cx="150" cy="150" r="150" fill="none" stroke="#0033a0" stroke-width="4"/>
-        <circle cx="150" cy="150" r="128.5" fill="none" stroke="#0033a0" stroke-width="2"/>
-        <text font-family="Cinzel,serif" font-weight="900" font-size="17" fill="#0033a0" letter-spacing="2.2"><textPath href="#ringPath" startOffset="25%" text-anchor="middle">CRUZEIRO ESPORTE CLUBE</textPath></text>
-      </svg>
-    </div></div>
+    <p class="sub">Porque aniversário de cruzeirense sem a Raposa não vale. Toque no escudo.</p>
+    <div class="stars3d"><div class="sky crest" id="sky"></div></div>
     <div class="facts">
       <span class="chip">Fundado em 2 de janeiro de 1921</span>
       <span class="chip">Bicampeão da Libertadores (1976 e 1997)</span>
@@ -615,7 +618,7 @@ addEventListener('pointerup', () => dragging = false);
 addEventListener('pointercancel', () => dragging = false);
 
 document.addEventListener('click', e => {
-  if (!started || e.target.closest('button, .ch, #game, .gate, .face, #carousel, .star')) return;
+  if (!started || e.target.closest('button, .ch, #game, .gate, .face, #carousel, .crest')) return;
   burst(e.clientX, e.clientY);
   whoosh(.22, 800, 3500, .08);
   if (Math.random() < .35) float(pick(LINES), e.clientX, e.clientY);
@@ -989,6 +992,9 @@ function gUpdate(dt) {
   G.trail = G.trail.filter(p => p.life > 0);
 }
 
+const loadImg = src => { const i = new Image(); i.src = src; return i; };
+const ready = i => i && i.complete && i.naturalWidth > 0;
+const MIMG = { normal: loadImg('assets/minion-melee.png'), cannon: loadImg('assets/minion-siege.png'), gold: loadImg('assets/minion-super.png'), kat: loadImg('assets/katarina-q.png') };
 function drawMinion(c, x, y, r, type, hat) {
   c.save(); c.translate(x, y);
   if (type === 'ff') {
@@ -1000,8 +1006,23 @@ function drawMinion(c, x, y, r, type, hat) {
   if (type === 'kat') {
     c.shadowColor = '#ff4d5e'; c.shadowBlur = 22;
     c.fillStyle = '#3a0a14'; c.beginPath(); c.arc(0, 0, r, 0, Math.PI * 2); c.fill();
-    c.shadowBlur = 0; c.lineWidth = 2.5; c.strokeStyle = '#ff4d5e'; c.stroke();
-    drawDagger(c, 0, 0, r * .9, Math.PI / 4);
+    c.shadowBlur = 0;
+    if (ready(MIMG.kat)) { c.save(); c.beginPath(); c.arc(0, 0, r, 0, Math.PI * 2); c.clip(); c.drawImage(MIMG.kat, -r, -r, r * 2, r * 2); c.restore(); }
+    else drawDagger(c, 0, 0, r * .9, Math.PI / 4);
+    c.lineWidth = 2.5; c.strokeStyle = '#ff4d5e'; c.beginPath(); c.arc(0, 0, r, 0, Math.PI * 2); c.stroke();
+    c.restore(); return;
+  }
+  if (ready(MIMG[type])) {
+    const s = r * 1.25;
+    if (type === 'gold') { c.shadowColor = '#f5c76a'; c.shadowBlur = 24; }
+    c.drawImage(MIMG[type], -s, -s, s * 2, s * 2);
+    c.shadowBlur = 0;
+    if (type === 'gold') { c.lineWidth = 3; c.strokeStyle = '#f5c76a'; c.beginPath(); c.arc(0, 0, s * .92, 0, Math.PI * 2); c.stroke(); }
+    c.translate(0, -r * .35);
+    c.fillStyle = hat; c.beginPath(); c.moveTo(-r * .55, -r * .7); c.lineTo(r * .55, -r * .7); c.lineTo(r * .15, -r * 1.75); c.closePath(); c.fill();
+    c.fillStyle = 'rgba(255,255,255,.65)';
+    c.beginPath(); c.moveTo(-r * .35, -r * 1.0); c.lineTo(r * .43, -r * 1.0); c.lineTo(r * .38, -r * 1.15); c.lineTo(-r * .25, -r * 1.15); c.closePath(); c.fill();
+    c.fillStyle = '#fff'; c.beginPath(); c.arc(r * .15, -r * 1.75, r * .17, 0, Math.PI * 2); c.fill();
     c.restore(); return;
   }
   const body = { normal: '#5b7cff', cannon: '#9a5bff', gold: '#f5c76a' }[type];
@@ -1078,21 +1099,28 @@ function gDraw() {
 }
 
 // ---------- CAMPEÕES (Data Dragon da Riot, com fallback offline) ----------
-const DD = 'https://ddragon.leagueoflegends.com';
+// textos oficiais em pt-BR; imagens em assets/ (tiradas dos arquivos do jogo)
 const CHAMPS = {
   Yasuo: { title: 'o Imperdoável', color: '#8be9ff', spells: [
-    ['P', 'Caminho do Errante', 'Ganha escudo de vento ao se mover e tem chance de acerto crítico dobrada.'],
-    ['Q', 'Tempestade de Aço', 'Estocada para frente. No terceiro acerto, solta um tornado que arremessa os inimigos.'],
-    ['W', 'Muralha de Vento', 'Cria uma parede de vento que bloqueia projéteis inimigos.'],
-    ['E', 'Espada Ágil', 'Avança através de um inimigo. A favorita pra entrar debaixo da torre.'],
-    ['R', 'Último Suspiro', 'Teleporta até inimigos arremessados e os mantém no ar.']] },
+    ['P', 'Estilo do Errante', 'A Chance de Acerto Crítico do Yasuo é aumentada. Além disso, Yasuo vai gerando um Escudo sempre que se movimenta.'],
+    ['Q', 'Tempestade de Aço', 'Golpeia à frente, causando dano a todos os inimigos em linha reta. Com 2 acúmulos, Tempestade de Aço desfere um tornado que arremessa inimigos ao ar.'],
+    ['W', 'Parede de Vento', 'Cria uma parede movediça que bloqueia todos os projéteis inimigos por 4 segundos.'],
+    ['E', 'Espada Ágil', 'Avança e atravessa o inimigo-alvo, causando Dano Mágico. Cada conjuração aumenta o dano do próximo avanço.'],
+    ['R', 'Último Suspiro', 'Teletransporta-se para um Campeão inimigo arremessado ao ar, causando Dano Físico e mantendo no ar todos os inimigos da área.']],
+    skins: ['Yasuo', 'Yasuo Velho Oeste', 'PROJETO: Yasuo', 'Yasuo Lua Sangrenta', 'Yasuo Emissário da Escuridão', 'Yasuo Odisseia', 'Yasuo Chefão'] },
   Katarina: { title: 'a Lâmina Sinistra', color: '#ff4d5e', spells: [
-    ['P', 'Voracidade', 'Abates e assistências reduzem drasticamente as recargas.'],
-    ['Q', 'Lâmina Saltitante', 'Arremessa uma adaga que quica entre os inimigos.'],
-    ['W', 'Preparação', 'Joga uma adaga pro alto e ganha velocidade de movimento.'],
-    ['E', 'Shunpo', 'Teleporta instantaneamente até um alvo ou adaga.'],
-    ['R', 'Lótus da Morte', 'Gira lançando adagas em todos os inimigos próximos.']] }
+    ['P', 'Voracidade', 'Os Tempos de Recarga de Katarina são reduzidos drasticamente sempre que um Campeão que ela havia causado dano recentemente morrer.'],
+    ['Q', 'Lâmina Saltitante', 'Katarina arremessa uma Adaga no alvo. Ela salta em inimigos próximos antes de ricochetear e cair no chão.'],
+    ['W', 'Preparação', 'Katarina recebe um impulso de Velocidade de Movimento e joga uma Adaga para cima.'],
+    ['E', 'Shunpo', 'Katarina desloca-se em direção ao alvo, golpeando-o caso seja inimigo ou golpeando o inimigo mais próximo caso não seja.'],
+    ['R', 'Lótus da Morte', 'Katarina gira em torno de si mesma, disparando adagas muito rapidamente e causando muito Dano Mágico nos 3 Campeões inimigos mais próximos.']],
+    skins: ['Katarina', 'Katarina Mercenária', 'Katarina Árbitra', 'Katarina Águas de Sentina', 'Katarina Gatinha', 'Katarina Comandante', 'Katarina Tempestade de Areia'] }
 };
+for (const id of Object.keys(CHAMPS)) {
+  const c = CHAMPS[id], f = id.toLowerCase();
+  c.spells.forEach(s => s[3] = `assets/${f}-${s[0].toLowerCase()}.png`);
+  c.skins = c.skins.map((name, i) => ({ name, src: `assets/${f}-skin${i}.jpg` }));
+}
 const champGrid = $('#champGrid'), champEls = {};
 function showSpell(id, i) {
   const c = CHAMPS[id], el = champEls[id]; c.sel = i;
@@ -1116,16 +1144,15 @@ function renderChamp(id) {
 for (const id of Object.keys(CHAMPS)) {
   const el = document.createElement('div'); el.className = 'card champ'; el.style.setProperty('--cc', CHAMPS[id].color);
   el.innerHTML = `<div class="art"><span class="art-fallback">${id[0]}</span><img alt="${id}"></div><div class="champ-name">${id.toUpperCase()}</div><div class="champ-title"></div><div class="spells"></div><div class="spell-info"><b></b><span></span></div>`;
-  const img = el.querySelector('img'); img.onerror = () => img.remove(); img.src = `${DD}/cdn/img/champion/loading/${id}_0.jpg`;
+  const img = el.querySelector('img'); img.onerror = () => img.remove(); img.src = CHAMPS[id].skins[0].src;
   champGrid.appendChild(el); champEls[id] = el; renderChamp(id);
 }
-$('#heroArt').style.backgroundImage = `url(${DD}/cdn/img/champion/splash/Yasuo_0.jpg)`;
 
 // carrossel 3D de skins
 const ringEl = $('#ring'), carEl = $('#carousel');
 const RG = { angle: 0, vel: 0, drag: false, lx: 0, R: 300, items: [] };
 function buildRing() {
-  const lists = Object.keys(CHAMPS).map(id => (CHAMPS[id].skins || [{ num: 0, name: 'default' }]).map(s => ({ id, num: s.num, name: s.name === 'default' ? id : s.name })));
+  const lists = Object.keys(CHAMPS).map(id => CHAMPS[id].skins);
   let items = [];
   const max = Math.max(...lists.map(l => l.length));
   for (let i = 0; i < max; i++) for (const l of lists) if (l[i]) items.push(l[i]);
@@ -1133,7 +1160,7 @@ function buildRing() {
   ringEl.innerHTML = '';
   RG.items = items.map(it => {
     const el = document.createElement('div'); el.className = 'skin';
-    const img = new Image(); img.alt = ''; img.onerror = () => img.remove(); img.src = `${DD}/cdn/img/champion/loading/${it.id}_${it.num}.jpg`;
+    const img = new Image(); img.alt = ''; img.onerror = () => img.remove(); img.src = it.src;
     const sp = document.createElement('span'); sp.textContent = it.name;
     el.append(img, sp); ringEl.appendChild(el); return el;
   });
@@ -1157,34 +1184,15 @@ function ringUpdate(dt) {
 buildRing();
 addEventListener('resize', layoutRing);
 
-function cleanHTML(html) { return (new DOMParser().parseFromString(html, 'text/html').body.textContent || '').replace(/\s+/g, ' ').trim(); }
-(async () => {
-  try {
-    const v = (await (await fetch(`${DD}/api/versions.json`)).json())[0];
-    for (const id of Object.keys(CHAMPS)) {
-      const d = (await (await fetch(`${DD}/cdn/${v}/data/pt_BR/champion/${id}.json`)).json()).data[id];
-      const c = CHAMPS[id]; c.title = d.title;
-      [d.passive, ...d.spells].forEach((s, i) => {
-        let txt = cleanHTML(s.description); if (txt.length > 230) txt = txt.slice(0, 227).trimEnd() + '…';
-        c.spells[i][1] = s.name; c.spells[i][2] = txt;
-        c.spells[i][3] = `${DD}/cdn/${v}/img/${i ? 'spell' : 'passive'}/${s.image.full}`;
-      });
-      c.skins = d.skins.slice(0, 7).map(s => ({ num: s.num, name: s.name }));
-      renderChamp(id);
-    }
-    buildRing();
-  } catch (e) { /* sem internet: fica com os dados embutidos */ }
-})();
-
-// ---------- CRUZEIRO: Cruzeiro do Sul em 3D ----------
+// ---------- CRUZEIRO: escudo oficial em 3D (moeda com espessura) ----------
 const sky = $('#sky');
-[[50, 12, 58, 60], [20, 44, 50, 30], [80, 40, 48, 10], [47, 88, 62, 45], [65, 62, 32, 80]].forEach(([x, y, s, z], i) => {
-  const st = document.createElement('div'); st.className = 'star'; st.innerHTML = '<i></i>';
-  x = 50 + (x - 50) * .68; y = 50 + (y - 50) * .68; s = Math.round(s * .78);
-  st.style.cssText = `left:${x}%;top:${y}%;width:${s}px;height:${s}px;transform:translate(-50%,-50%) translateZ(${z}px)`;
-  st.onclick = e => { e.stopPropagation(); st.classList.remove('tw'); void st.offsetWidth; st.classList.add('tw'); tone([523, 587, 659, 784, 880][i], .4, 'triangle', .08); };
-  sky.appendChild(st);
-});
+for (let i = 12; i >= 0; i--) {
+  const im = new Image(); im.src = 'assets/cruzeiro.svg'; im.alt = i ? '' : 'Escudo do Cruzeiro';
+  if (i) im.className = 'depth';
+  im.style.transform = `translateZ(${-i * 1.6}px)`;
+  sky.appendChild(im);
+}
+sky.onclick = e => { e.stopPropagation(); sky.classList.remove('tw'); void sky.offsetWidth; sky.classList.add('tw'); cruzeiroParty(); };
 $('#zeiro').onclick = cruzeiroParty;
 
 // ---------- 3D: tilt do nome e dos cards ----------
