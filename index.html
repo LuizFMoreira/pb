@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Feliz Aniversário, Higor!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#070b18;--wind:#8be9ff;--gold:#f5c76a;--sakura:#ff9ecb;--text:#eef3ff;--muted:#9aa7c7;
@@ -131,6 +133,107 @@ footer q{display:block;font-style:italic;color:#cfd8f5;font-size:17px;margin-bot
 @keyframes floatUp{0%{opacity:0;transform:translate(-50%,-30%) scale(.7)}15%{opacity:1;transform:translate(-50%,-60%) scale(1.05)}100%{opacity:0;transform:translate(-50%,-160%) scale(1)}}
 .mute{position:fixed;top:14px;right:14px;z-index:40;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:rgba(10,16,36,.7);color:var(--text);font-size:19px;cursor:pointer}
 @media (max-width:520px){.hud b{font-size:18px}.notes li{padding:12px}}
+
+/* ---------- 3D ---------- */
+.hero3d{position:relative;overflow:hidden;perspective:700px}
+.floor{position:absolute;left:-50%;right:-50%;bottom:-6%;height:55%;z-index:-1;pointer-events:none;
+  background-image:linear-gradient(rgba(139,233,255,.35) 1px,transparent 1px),linear-gradient(90deg,rgba(139,233,255,.35) 1px,transparent 1px);
+  background-size:64px 64px;transform:rotateX(76deg);transform-origin:50% 100%;animation:floor 1.8s linear infinite;
+  -webkit-mask-image:linear-gradient(to top,#000 5%,transparent 85%);mask-image:linear-gradient(to top,#000 5%,transparent 85%)}
+@keyframes floor{to{background-position:0 64px}}
+.name-wrap{position:relative;transform-style:preserve-3d;margin:20px 0 24px;will-change:transform}
+.name-wrap .name{margin:0;position:relative}
+.name.depth{position:absolute;inset:0;pointer-events:none;filter:none}
+.dch{display:inline-block}
+.gate > div{perspective:800px}
+.gate svg{animation:swing 4s ease-in-out infinite}
+@keyframes swing{0%,100%{transform:rotateY(-28deg) rotateZ(-4deg)}50%{transform:rotateY(28deg) rotateZ(4deg) translateY(-8px)}}
+
+.card.tilt{position:relative;transform:perspective(1100px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transform-style:preserve-3d;
+  backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(16,24,52,.84);will-change:transform}
+.card.tilt::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;mix-blend-mode:screen;transform:translateZ(1px);
+  background:radial-gradient(circle at var(--gx,50%) var(--gy,50%),rgba(255,255,255,var(--ga,0)),transparent 45%),
+    linear-gradient(115deg,transparent 25%,rgba(139,233,255,calc(var(--ga,0) * .45)) 42%,rgba(255,158,203,calc(var(--ga,0) * .45)) 58%,transparent 75%)}
+.card.tilt > :not(.letter){transform:translateZ(28px)}
+.card.tilt > .btn:hover{transform:translateZ(28px) translateY(-2px)}
+.card.tilt > .btn:active{transform:translateZ(28px) scale(.97)}
+
+.kda{perspective:500px}
+.kda span{display:inline-block}
+.slot{animation:slot .65s cubic-bezier(.16,1,.3,1) both}
+@keyframes slot{from{transform:rotateX(-100deg);opacity:0}to{transform:none;opacity:1}}
+
+.notes li{transform:perspective(800px) translateZ(-160px) rotateX(35deg);transform-origin:50% 0}
+.notes li.in{transform:none}
+
+.letter{perspective:1200px}
+.flip{display:grid;transform-style:preserve-3d;transition:transform 1s cubic-bezier(.16,1,.3,1)}
+.flip.open{transform:rotateY(180deg)}
+.face{grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:16px;padding:clamp(18px,4vw,28px)}
+.face.front{display:grid;place-items:center;text-align:center;min-height:230px;cursor:pointer;border:1px solid var(--gold);
+  background:linear-gradient(135deg,#2c2256,#14234a);box-shadow:0 20px 40px rgba(0,0,0,.4)}
+.face.back{transform:rotateY(180deg);background:rgba(8,13,30,.65);border:1px solid var(--line)}
+.seal{width:66px;height:66px;border-radius:50%;margin:0 auto 14px;display:grid;place-items:center;font-weight:900;font-size:28px;color:#5a3a08;
+  background:radial-gradient(circle at 35% 30%,#ffe3a3,#c8902f);box-shadow:0 6px 18px rgba(0,0,0,.45)}
+.env-title{font-size:clamp(20px,4vw,26px);font-weight:900}
+.env-hint{color:var(--wind);margin-top:8px;animation:pulse 1.6s infinite;font-weight:600}
+
+/* ---------- visual de cliente (hextech) ---------- */
+:root{--gold:#c8aa6e;--card:rgba(1,10,19,.85);--line:rgba(200,170,110,.32);--kat:#ff4d5e;--sw:clamp(100px,20vw,150px)}
+h2,.name,.eyebrow,.champ-name,.g-over h3,.g-over .rank,.env-title,.mini{font-family:"Cinzel","Times New Roman",serif}
+.card.tilt{background:linear-gradient(180deg,rgba(9,20,40,.93),rgba(1,10,19,.93))}
+.hero-art{position:absolute;inset:0;z-index:-2;background:center 20%/cover no-repeat;opacity:.24;pointer-events:none;
+  -webkit-mask-image:radial-gradient(ellipse at 50% 40%,#000 25%,transparent 75%);mask-image:radial-gradient(ellipse at 50% 40%,#000 25%,transparent 75%)}
+
+.champ-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px;width:100%;max-width:880px}
+.card.champ{padding:18px;max-width:none;box-shadow:0 20px 60px rgba(0,0,0,.45),inset 0 0 0 1px color-mix(in srgb,var(--cc) 40%,transparent)}
+.art{position:relative;width:min(100%,210px);aspect-ratio:308/560;margin:0 auto 14px;border-radius:12px;overflow:hidden;border:1px solid var(--line);
+  background:linear-gradient(160deg,var(--cc),#0a1024 70%)}
+.art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.art-fallback{position:absolute;inset:0;display:grid;place-items:center;font:900 80px "Cinzel",serif;color:rgba(255,255,255,.45)}
+.champ-name{font-size:26px;font-weight:900;letter-spacing:.1em}
+.champ-title{color:var(--gold);font-size:14px;margin-bottom:14px}
+.spells{display:flex;justify-content:center;gap:8px;margin-bottom:12px}
+.spell{position:relative;width:46px;height:46px;border-radius:8px;border:1px solid var(--line);background:#0a1024;color:var(--text);cursor:pointer;overflow:hidden;padding:0;font:800 15px "Segoe UI",sans-serif;transition:box-shadow .2s,border-color .2s}
+.spell img{position:absolute;inset:0;width:100%;height:100%}
+.spell b{position:absolute;right:2px;bottom:1px;font-size:11px;background:rgba(0,0,0,.75);padding:0 4px;border-radius:4px}
+.spell.on{border-color:var(--cc);box-shadow:0 0 14px var(--cc)}
+.spell-info{min-height:5.2em;font-size:14px;line-height:1.45;color:#cfd8f5;text-align:left}
+.spell-info b{display:block;color:var(--cc);margin-bottom:3px}
+.carousel-wrap{width:100%;max-width:920px;margin-top:56px}
+.mini{font-size:22px;color:var(--gold);margin-bottom:6px}
+.carousel{position:relative;height:calc(var(--sw) * 1.82 + 50px);perspective:1100px;touch-action:pan-y;cursor:grab;user-select:none;overflow:hidden;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 15%,#000 85%,transparent);mask-image:linear-gradient(90deg,transparent,#000 15%,#000 85%,transparent)}
+.carousel:active{cursor:grabbing}
+.ring{position:absolute;left:50%;top:50%;width:0;height:0;transform-style:preserve-3d}
+.skin{position:absolute;width:var(--sw);height:calc(var(--sw) * 1.818);left:calc(var(--sw) / -2);top:calc(var(--sw) * -.909);border-radius:10px;overflow:hidden;
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;border:1px solid var(--line);background:linear-gradient(160deg,#1b2b55,#0a1024)}
+.skin img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.skin span{position:absolute;left:0;right:0;bottom:0;padding:22px 6px 7px;font-size:11px;font-weight:700;background:linear-gradient(transparent,rgba(0,0,0,.88))}
+.hint-sm{color:var(--muted);font-size:13px;margin-top:6px}
+
+.cab h2 .blue{color:#4d8bff}
+.stars3d{perspective:900px;width:min(300px,76vw);height:min(300px,76vw);margin:10px auto 34px}
+.sky{position:relative;width:100%;height:100%;border-radius:50%;transform-style:preserve-3d;
+  background:radial-gradient(circle at 50% 40%,#1550d6,#06215f 72%);box-shadow:0 0 70px rgba(30,90,255,.45),inset 0 0 40px rgba(0,0,0,.45)}
+.crest-ring{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;transform:translateZ(2px)}
+.star{position:absolute;cursor:pointer;filter:drop-shadow(0 0 10px rgba(255,255,255,.85))}
+.star i{display:block;width:100%;height:100%;background:#fff;clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)}
+.star.tw i{animation:tw .6s ease}
+@keyframes tw{50%{transform:scale(1.5) rotate(36deg)}}
+.facts{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:640px;margin:0 auto 26px}
+.facts .chip{color:#dbe4ff;border-color:rgba(77,139,255,.4)}
+.btn.blue{border-color:#3d7bff;background:linear-gradient(180deg,rgba(31,95,255,.35),rgba(31,95,255,.08))}
+.btn.blue:hover{box-shadow:0 0 28px rgba(61,123,255,.6)}
+.float.red{color:var(--kat);text-shadow:0 0 16px var(--kat),0 3px 0 #000}
+.float.blue{color:#fff;text-shadow:0 0 18px #1f5fff,0 3px 0 #0033a0}
+.disclaimer{display:block;margin-top:14px;font-size:12px;opacity:.7}
+
+@media (prefers-reduced-motion:reduce){
+  .floor,.gate svg,.slot,.env-hint{animation:none}
+  .notes li{transform:none}
+  .flip{transition:none}
+}
 </style>
 </head>
 <body>
@@ -160,9 +263,11 @@ footer q{display:block;font-style:italic;color:#cfd8f5;font-size:17px;margin-bot
 
 <main>
   <!-- HERO -->
-  <section id="hero">
+  <section id="hero" class="hero3d">
+    <div class="hero-art" id="heroArt"></div>
+    <div class="floor"></div>
     <div class="eyebrow">Feliz aniversário</div>
-    <h1 class="name" id="name"></h1>
+    <div class="name-wrap" id="nameWrap"><h1 class="name" id="name"></h1></div>
     <p class="tagline">Hoje o vento sopra a seu favor. Parabéns pro Yasuo main mais corajoso (ou teimoso) que eu conheço.</p>
     <div class="tips">
       <span class="chip"><b>clique</b> nas letras pra dar knock-up</span>
@@ -170,6 +275,18 @@ footer q{display:block;font-style:italic;color:#cfd8f5;font-size:17px;margin-bot
       <span class="chip">digite <b>hasagi</b></span>
     </div>
     <div class="scroll">role ↓</div>
+  </section>
+
+  <!-- CAMPEÕES -->
+  <section id="champs">
+    <h2>Seleção de <span class="accent">Campeões</span></h2>
+    <p class="sub">A dupla mais caótica da Fenda: zero controle de grupo, 100% de confiança. Toque nas habilidades.</p>
+    <div class="champ-grid" id="champGrid"></div>
+    <div class="carousel-wrap">
+      <h3 class="mini">Coleção de skins</h3>
+      <div class="carousel" id="carousel"><div class="ring" id="ring"></div></div>
+      <p class="hint-sm">arraste pra girar</p>
+    </div>
   </section>
 
   <!-- KDA -->
@@ -206,6 +323,7 @@ footer q{display:block;font-style:italic;color:#cfd8f5;font-size:17px;margin-bot
             <span style="--c:#9a5bff">canhão +3</span>
             <span style="--c:#f5c76a">dourado +5</span>
             <span style="--c:#d7263d">pedido de FF −3</span>
+            <span style="--c:#ff4d5e">adaga da Katarina = Lótus da Morte</span>
           </div>
           <button class="btn gold" id="gStart">Começar (30s)</button>
         </div>
@@ -220,6 +338,28 @@ footer q{display:block;font-style:italic;color:#cfd8f5;font-size:17px;margin-bot
     <div class="card">
       <ul class="notes" id="notes"></ul>
     </div>
+  </section>
+
+  <!-- CRUZEIRO -->
+  <section id="cabuloso" class="cab">
+    <h2>E é claro: <span class="blue">Cruzeiro</span></h2>
+    <p class="sub">Porque aniversário de cruzeirense sem a Raposa não vale. Toque nas estrelas do Cruzeiro do Sul.</p>
+    <div class="stars3d"><div class="sky" id="sky">
+      <svg class="crest-ring" viewBox="0 0 300 300" aria-hidden="true">
+        <defs><path id="ringPath" d="M150,150 m-128,0 a128,128 0 1,1 256,0 a128,128 0 1,1 -256,0"/></defs>
+        <circle cx="150" cy="150" r="140" fill="none" stroke="#fff" stroke-width="22"/>
+        <circle cx="150" cy="150" r="150" fill="none" stroke="#0033a0" stroke-width="4"/>
+        <circle cx="150" cy="150" r="128.5" fill="none" stroke="#0033a0" stroke-width="2"/>
+        <text font-family="Cinzel,serif" font-weight="900" font-size="17" fill="#0033a0" letter-spacing="2.2"><textPath href="#ringPath" startOffset="25%" text-anchor="middle">CRUZEIRO ESPORTE CLUBE</textPath></text>
+      </svg>
+    </div></div>
+    <div class="facts">
+      <span class="chip">Fundado em 2 de janeiro de 1921</span>
+      <span class="chip">Bicampeão da Libertadores (1976 e 1997)</span>
+      <span class="chip">Tríplice Coroa em 2003</span>
+      <span class="chip">Casa: Mineirão</span>
+    </div>
+    <button class="btn blue" id="zeiro">Grito da torcida</button>
   </section>
 
   <!-- BOLO -->
@@ -243,6 +383,7 @@ footer q{display:block;font-style:italic;color:#cfd8f5;font-size:17px;margin-bot
 <footer>
   <q>A morte é como o vento: sempre ao meu lado.</q>
   Feito com vento, pétalas e zero downloads.
+  <span class="disclaimer">Página de fã, sem fins comerciais. League of Legends, Yasuo, Katarina e as artes são propriedade da Riot Games.</span>
 </footer>
 
 <script>
@@ -340,8 +481,8 @@ function confettiBurst(x, y, n = 80) {
     confetti.push({ x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s, c: pick(CONF_COLORS), w: rand(6, 11), h: rand(3, 6), rot: rand(0, 6.28), vr: rand(-.3, .3) });
   }
 }
-function confettiRain(n = 160) {
-  for (let i = 0; i < n; i++) confetti.push({ x: rand(0, W), y: rand(-H * .6, -10), vx: rand(-1, 1), vy: rand(1, 4), c: pick(CONF_COLORS), w: rand(6, 11), h: rand(3, 6), rot: rand(0, 6.28), vr: rand(-.3, .3) });
+function confettiRain(n = 160, colors = CONF_COLORS) {
+  for (let i = 0; i < n; i++) confetti.push({ x: rand(0, W), y: rand(-H * .6, -10), vx: rand(-1, 1), vy: rand(1, 4), c: pick(colors), w: rand(6, 11), h: rand(3, 6), rot: rand(0, 6.28), vr: rand(-.3, .3) });
 }
 
 function resize() {
@@ -403,6 +544,25 @@ function bgUpdate(dt) {
     if (c.y > H + 30) confetti.splice(i, 1);
   }
   for (let i = trail.length - 1; i >= 0; i--) { trail[i].life -= .07 * dt; if (trail[i].life <= 0) trail.splice(i, 1); }
+  for (let i = bgDaggers.length - 1; i >= 0; i--) {
+    const d = bgDaggers[i]; d.x += d.vx * dt; d.y += d.vy * dt; d.vx *= Math.pow(.985, dt); d.vy *= Math.pow(.985, dt); d.rot += d.vr * dt; d.life -= dt;
+    if (d.life <= 0) bgDaggers.splice(i, 1);
+  }
+}
+const bgDaggers = [];
+function lotusBg() {
+  const cx = W / 2, cy = H / 2;
+  for (let i = 0; i < 18; i++) { const a = i / 18 * Math.PI * 2; bgDaggers.push({ x: cx, y: cy, vx: Math.cos(a) * 9, vy: Math.sin(a) * 9, rot: a, vr: .4, life: 100 }); }
+  float('LÓTUS DA MORTE!', cx, cy, 'big red');
+  for (let i = 0; i < 14; i++) tone(900 + i * 35, .06, 'square', .03, i * .05);
+  whoosh(1.2, 800, 3000, .22);
+}
+const CRUZ = ['#0033a0', '#1f5fff', '#ffffff', '#ffffff'];
+function cruzeiroParty() {
+  confettiRain(240, CRUZ);
+  float('CABULOSO!', W / 2, H / 2, 'big blue');
+  whoosh(2.2, 300, 700, .18);
+  [392, 392, 523, 392, 392, 523, 659, 587, 523].forEach((f, i) => { tone(f, .22, 'sawtooth', .045, i * .24); tone(f / 2, .22, 'square', .03, i * .24); });
 }
 
 function bgDraw() {
@@ -420,6 +580,8 @@ function bgDraw() {
     bx.restore();
   }
   for (const tor of tornados) drawTornado(bx, tor.x, H, H * .85, tor.t);
+  for (const d of bgDaggers) { bx.globalAlpha = Math.min(1, d.life / 30); drawDagger(bx, d.x, d.y, 26, d.rot); }
+  bx.globalAlpha = 1;
   for (const c of confetti) {
     bx.save(); bx.translate(c.x, c.y); bx.rotate(c.rot); bx.scale(1, Math.cos(c.rot * 2));
     bx.fillStyle = c.c; bx.fillRect(-c.w / 2, -c.h / 2, c.w, c.h); bx.restore();
@@ -442,7 +604,7 @@ function drawTrail(c, pts, width) {
 
 // rastro global ao arrastar
 let dragging = false, lastSwoosh = 0;
-addEventListener('pointerdown', e => { if (!started || e.target.closest('#game, button')) return; dragging = true; trail.push({ x: e.clientX, y: e.clientY, life: 1 }); });
+addEventListener('pointerdown', e => { if (!started || e.target.closest('#game, button, #carousel')) return; dragging = true; trail.push({ x: e.clientX, y: e.clientY, life: 1 }); });
 addEventListener('pointermove', e => {
   if (!dragging) return;
   const last = trail[trail.length - 1];
@@ -453,7 +615,7 @@ addEventListener('pointerup', () => dragging = false);
 addEventListener('pointercancel', () => dragging = false);
 
 document.addEventListener('click', e => {
-  if (!started || e.target.closest('button, .ch, #game, .gate')) return;
+  if (!started || e.target.closest('button, .ch, #game, .gate, .face, #carousel, .star')) return;
   burst(e.clientX, e.clientY);
   whoosh(.22, 800, 3500, .08);
   if (Math.random() < .35) float(pick(LINES), e.clientX, e.clientY);
@@ -463,12 +625,14 @@ let keyBuf = '';
 document.addEventListener('keydown', e => {
   if (!started || e.ctrlKey || e.metaKey || e.altKey) return;
   const k = e.key.toLowerCase();
-  if (k === 'q' && G.running) { useQ(); return; }
-  if (k === 'r') { blow(); return; }
   if (k.length === 1) {
     keyBuf = (keyBuf + k).slice(-12);
-    if (/hasa[gk]i$/.test(keyBuf)) { keyBuf = ''; bigTornado(); }
+    if (/hasa[gk]i$/.test(keyBuf)) { keyBuf = ''; bigTornado(); return; }
+    if (/(shunpo|katarina)$/.test(keyBuf)) { keyBuf = ''; lotusBg(); return; }
+    if (/(cruzeiro|cabuloso)$/.test(keyBuf)) { keyBuf = ''; cruzeiroParty(); return; }
   }
+  if (k === 'q' && G.running) useQ();
+  if (k === 'r') { const r = $('#bolo').getBoundingClientRect(); if (r.top < H * .8 && r.bottom > H * .2) blow(); }
 });
 
 // ---------- portão / hero ----------
@@ -482,6 +646,16 @@ CONFIG.nome.toUpperCase().split(' ').forEach((word, wi) => {
     nameEl.appendChild(s);
   }
 });
+// camadas de extrusão atrás do nome
+const nameWrap = $('#nameWrap');
+for (let i = 1; i <= 10; i++) {
+  const d = nameEl.cloneNode(true), k = i / 10;
+  d.removeAttribute('id'); d.classList.add('depth'); d.setAttribute('aria-hidden', 'true');
+  d.querySelectorAll('.ch').forEach(s => s.className = 'dch');
+  d.style.transform = `translateZ(${-i * 2.5}px)`;
+  d.style.color = `rgb(${60 - 40 * k | 0},${170 - 140 * k | 0},${210 - 160 * k | 0})`;
+  nameWrap.insertBefore(d, nameEl);
+}
 function knockLetter(s) {
   if (s.classList.contains('up')) return;
   s.classList.add('up');
@@ -526,6 +700,7 @@ $('#roll').onclick = () => {
     if (++n > 16) {
       clearInterval(iv); rolling = false;
       kK.textContent = k; kD.textContent = d; kA.textContent = a;
+      [kK, kD, kA].forEach((el, i) => { el.classList.remove('slot'); void el.offsetWidth; el.style.animationDelay = i * 90 + 'ms'; el.classList.add('slot'); });
       $('#kR').textContent = `KDA ${((k + a) / Math.max(1, d)).toFixed(2)} • ${lucky ? 'LENDÁRIO' : 'powerspike chegando™'}`;
       $('#kC').textContent = pick(lucky ? LUCKY : COMMENTS);
       ding();
@@ -569,8 +744,20 @@ const nCandles = Math.max(3, Math.min(CONFIG.idade || 7, 11));
 for (let i = 0; i < nCandles; i++) { const c = document.createElement('div'); c.className = 'candle'; c.innerHTML = '<div class="flame"></div>'; candlesEl.appendChild(c); }
 if (CONFIG.idade) $('#topper').textContent = `${CONFIG.idade} ANOS`;
 const letterEl = $('#letter');
-CONFIG.mensagem.forEach(t => { const p = document.createElement('p'); p.textContent = t; letterEl.appendChild(p); });
-const sig = document.createElement('p'); sig.className = 'sig'; sig.textContent = '— ' + CONFIG.de; letterEl.appendChild(sig);
+const flip = document.createElement('div'); flip.className = 'flip';
+const front = document.createElement('div'); front.className = 'face front';
+front.innerHTML = '<div><div class="seal">H</div><div class="env-title"></div><div class="env-hint">toque pra abrir</div></div>';
+front.querySelector('.env-title').textContent = 'Carta pro ' + CONFIG.nome.split(' ')[0];
+const back = document.createElement('div'); back.className = 'face back';
+CONFIG.mensagem.forEach(t => { const p = document.createElement('p'); p.textContent = t; back.appendChild(p); });
+const sig = document.createElement('p'); sig.className = 'sig'; sig.textContent = '— ' + CONFIG.de; back.appendChild(sig);
+flip.append(front, back); letterEl.appendChild(flip);
+front.addEventListener('click', () => {
+  if (flip.classList.contains('open')) return;
+  flip.classList.add('open');
+  whoosh(.5, 300, 2000, .15); ding();
+  const r = front.getBoundingClientRect(); confettiBurst(r.left + r.width / 2, r.top + r.height / 2, 70);
+});
 
 let blown = false, blowing = false;
 function blow() {
@@ -634,8 +821,8 @@ let best = 0; try { best = +localStorage.getItem('higor-best') || 0; } catch (e)
 
 function spawn() {
   const roll = Math.random();
-  const type = roll < .12 ? 'ff' : roll < .22 ? 'gold' : roll < .38 ? 'cannon' : 'normal';
-  const r = { ff: 22, gold: 17, cannon: 28, normal: 21 }[type];
+  const type = roll < .1 ? 'ff' : roll < .15 ? 'kat' : roll < .25 ? 'gold' : roll < .4 ? 'cannon' : 'normal';
+  const r = { ff: 22, kat: 19, gold: 17, cannon: 28, normal: 21 }[type];
   const m = { type, r, hat: pick(HATS), bob: rand(0, 6.28), dead: false, knock: false, spin: 0 };
   if (Math.random() < .45) {
     const h = rand(GH * .45, GH * .8);
@@ -661,12 +848,13 @@ function updateHUD() {
 
 function cut(m, ang) {
   m.dead = true;
-  const color = { normal: '#5b7cff', cannon: '#9a5bff', gold: '#f5c76a', ff: '#d7263d' }[m.type];
+  const color = { normal: '#5b7cff', cannon: '#9a5bff', gold: '#f5c76a', ff: '#d7263d', kat: '#ff4d5e' }[m.type];
   for (const side of [-1, 1]) {
     G.halves.push({ x: m.x, y: m.y, r: m.r, type: m.type, hat: m.hat, ang, side, rot: 0, vr: side * .07,
       vx: m.vx * .4 + Math.cos(ang + Math.PI / 2) * side * 2.2, vy: (m.leap ? m.vy * .3 : 0) + Math.sin(ang + Math.PI / 2) * side * 2.2 - 2, life: 70 });
   }
   gParts(m.x, m.y, color, 12);
+  if (m.type === 'kat') { startLotus(m.x, m.y); return; }
   if (m.type === 'ff') {
     G.score = Math.max(0, G.score - 3); G.combo = 0;
     gText('NUNCA DÊ FF! −3', m.x, m.y - 30, '#ff6b7d', 22); bonk();
@@ -685,11 +873,28 @@ function cut(m, ang) {
 
 function knockUp(m) {
   m.knock = true; m.vy = -9; m.vx *= .2;
-  if (m.type !== 'ff') { const p = PTS[m.type]; G.score += p; gText('+' + p, m.x, m.y - 28, '#8be9ff', 20); }
+  if (m.type === 'kat') startLotus(m.x, m.y);
+  else if (m.type !== 'ff') { const p = PTS[m.type]; G.score += p; gText('+' + p, m.x, m.y - 28, '#8be9ff', 20); }
   tone(300 + ri(400), .12, 'triangle', .05);
   updateHUD();
 }
 
+function startLotus(x, y) {
+  G.lotus = { x, y, t: 0, r: Math.min(180, GW * .35) };
+  gText('LÓTUS DA MORTE!', x, y - 40, '#ff4d5e', 26);
+  for (let i = 0; i < 12; i++) tone(900 + i * 40, .05, 'square', .03, i * .06);
+  whoosh(1.2, 800, 3000, .2);
+}
+function drawDagger(c, x, y, s, rot) {
+  c.save(); c.translate(x, y); c.rotate(rot);
+  c.fillStyle = '#e8e8f0';
+  c.beginPath(); c.moveTo(0, -s); c.quadraticCurveTo(s * .32, -s * .3, s * .14, s * .15); c.lineTo(-s * .14, s * .15); c.quadraticCurveTo(-s * .32, -s * .3, 0, -s); c.fill();
+  c.fillStyle = '#ff4d5e'; c.fillRect(-s * .03, -s * .8, s * .06, s * .85);
+  c.fillStyle = '#c8aa6e'; c.fillRect(-s * .35, s * .15, s * .7, s * .1);
+  c.fillStyle = '#5a0d1a'; c.fillRect(-s * .08, s * .25, s * .16, s * .4);
+  c.fillStyle = '#c8aa6e'; c.beginPath(); c.arc(0, s * .7, s * .09, 0, Math.PI * 2); c.fill();
+  c.restore();
+}
 function useQ() {
   if (!G.running) return;
   if (G.stacks < 2) { gText('Q3 ainda não carregou: corta mais!', GW / 2, GH * .2, '#9aa7c7', 16); return; }
@@ -724,12 +929,12 @@ const gUp = () => { G.down = false; };
 gc.addEventListener('pointerup', gUp); gc.addEventListener('pointercancel', gUp);
 
 function startGame() {
-  Object.assign(G, { running: true, elapsed: 0, score: 0, stacks: 0, cuts: 0, ms: [], halves: [], parts: [], texts: [], tor: null, spawnT: 20, combo: 0 });
+  Object.assign(G, { running: true, elapsed: 0, score: 0, stacks: 0, cuts: 0, ms: [], halves: [], parts: [], texts: [], tor: null, lotus: null, spawnT: 20, combo: 0 });
   $('#gOver').classList.add('hide');
   ding(); updateHUD();
 }
 function endGame() {
-  G.running = false; G.tor = null;
+  G.running = false; G.tor = null; G.lotus = null;
   const rank = RANKS.filter(r => G.score >= r[0]).pop();
   const record = G.score > best;
   if (record) { best = G.score; try { localStorage.setItem('higor-best', best); } catch (e) {} }
@@ -762,6 +967,11 @@ function gUpdate(dt) {
     for (const m of G.ms) if (!m.dead && !m.knock && Math.abs(m.x - G.tor.x) < 60) knockUp(m);
     if (G.tor.x > GW + 120) G.tor = null;
   }
+  if (G.lotus) {
+    const L = G.lotus; L.t += dt;
+    for (const m of G.ms) if (!m.dead && !m.knock && m.type !== 'ff' && m.type !== 'kat' && Math.hypot(m.x - L.x, m.y - L.y) < L.r) cut(m, rand(0, Math.PI * 2));
+    if (L.t > 100) G.lotus = null;
+  }
   for (const m of G.ms) {
     m.bob += .15 * dt;
     if (m.knock) { m.vy -= .2 * dt; m.spin += .35 * dt; }
@@ -786,6 +996,13 @@ function drawMinion(c, x, y, r, type, hat) {
     c.lineWidth = 3; c.strokeStyle = '#ff8fa0'; c.stroke();
     c.fillStyle = '#fff'; c.font = `900 ${r * .9}px "Segoe UI",sans-serif`; c.textAlign = 'center'; c.textBaseline = 'middle';
     c.fillText('FF', 0, 1); c.restore(); return;
+  }
+  if (type === 'kat') {
+    c.shadowColor = '#ff4d5e'; c.shadowBlur = 22;
+    c.fillStyle = '#3a0a14'; c.beginPath(); c.arc(0, 0, r, 0, Math.PI * 2); c.fill();
+    c.shadowBlur = 0; c.lineWidth = 2.5; c.strokeStyle = '#ff4d5e'; c.stroke();
+    drawDagger(c, 0, 0, r * .9, Math.PI / 4);
+    c.restore(); return;
   }
   const body = { normal: '#5b7cff', cannon: '#9a5bff', gold: '#f5c76a' }[type];
   const belly = { normal: '#a5b8ff', cannon: '#cdb0ff', gold: '#fff1c2' }[type];
@@ -839,6 +1056,16 @@ function gDraw() {
   for (const p of G.parts) { c.globalAlpha = Math.min(1, p.life / 20); c.fillStyle = p.color; c.fillRect(p.x - 2, p.y - 2, 4, 4); }
   c.globalAlpha = 1;
   if (G.tor) drawTornado(c, G.tor.x, GH, GH * .9, G.tor.t);
+  if (G.lotus) {
+    const L = G.lotus;
+    c.save(); c.globalAlpha = Math.max(0, Math.min(1, (100 - L.t) / 20));
+    c.strokeStyle = 'rgba(255,77,94,.5)'; c.lineWidth = 2; c.beginPath(); c.arc(L.x, L.y, L.r, 0, Math.PI * 2); c.stroke();
+    for (let i = 0; i < 10; i++) {
+      const ang = L.t * .18 + i * Math.PI / 5, rr = L.r * (.45 + .45 * Math.sin(L.t * .1 + i));
+      drawDagger(c, L.x + Math.cos(ang) * rr, L.y + Math.sin(ang) * rr, 16, ang + Math.PI / 2);
+    }
+    c.restore();
+  }
   drawTrail(c, G.trail, 6);
   c.textAlign = 'center'; c.textBaseline = 'middle';
   for (const t of G.texts) {
@@ -850,6 +1077,146 @@ function gDraw() {
   c.globalAlpha = 1;
 }
 
+// ---------- CAMPEÕES (Data Dragon da Riot, com fallback offline) ----------
+const DD = 'https://ddragon.leagueoflegends.com';
+const CHAMPS = {
+  Yasuo: { title: 'o Imperdoável', color: '#8be9ff', spells: [
+    ['P', 'Caminho do Errante', 'Ganha escudo de vento ao se mover e tem chance de acerto crítico dobrada.'],
+    ['Q', 'Tempestade de Aço', 'Estocada para frente. No terceiro acerto, solta um tornado que arremessa os inimigos.'],
+    ['W', 'Muralha de Vento', 'Cria uma parede de vento que bloqueia projéteis inimigos.'],
+    ['E', 'Espada Ágil', 'Avança através de um inimigo. A favorita pra entrar debaixo da torre.'],
+    ['R', 'Último Suspiro', 'Teleporta até inimigos arremessados e os mantém no ar.']] },
+  Katarina: { title: 'a Lâmina Sinistra', color: '#ff4d5e', spells: [
+    ['P', 'Voracidade', 'Abates e assistências reduzem drasticamente as recargas.'],
+    ['Q', 'Lâmina Saltitante', 'Arremessa uma adaga que quica entre os inimigos.'],
+    ['W', 'Preparação', 'Joga uma adaga pro alto e ganha velocidade de movimento.'],
+    ['E', 'Shunpo', 'Teleporta instantaneamente até um alvo ou adaga.'],
+    ['R', 'Lótus da Morte', 'Gira lançando adagas em todos os inimigos próximos.']] }
+};
+const champGrid = $('#champGrid'), champEls = {};
+function showSpell(id, i) {
+  const c = CHAMPS[id], el = champEls[id]; c.sel = i;
+  el.querySelectorAll('.spell').forEach((b, j) => b.classList.toggle('on', j === i));
+  el.querySelector('.spell-info b').textContent = `${c.spells[i][0]} · ${c.spells[i][1]}`;
+  el.querySelector('.spell-info span').textContent = c.spells[i][2];
+}
+function renderChamp(id) {
+  const c = CHAMPS[id], el = champEls[id];
+  el.querySelector('.champ-title').textContent = c.title;
+  const sp = el.querySelector('.spells'); sp.innerHTML = '';
+  c.spells.forEach((s, i) => {
+    const b = document.createElement('button'); b.className = 'spell'; b.title = s[1];
+    if (s[3]) { const im = new Image(); im.alt = ''; im.onerror = () => im.remove(); im.src = s[3]; b.appendChild(im); }
+    const k = document.createElement('b'); k.textContent = s[0]; b.appendChild(k);
+    b.onclick = e => { e.stopPropagation(); showSpell(id, i); tone(600 + i * 90, .12, 'triangle', .06); };
+    sp.appendChild(b);
+  });
+  showSpell(id, c.sel ?? 1);
+}
+for (const id of Object.keys(CHAMPS)) {
+  const el = document.createElement('div'); el.className = 'card champ'; el.style.setProperty('--cc', CHAMPS[id].color);
+  el.innerHTML = `<div class="art"><span class="art-fallback">${id[0]}</span><img alt="${id}"></div><div class="champ-name">${id.toUpperCase()}</div><div class="champ-title"></div><div class="spells"></div><div class="spell-info"><b></b><span></span></div>`;
+  const img = el.querySelector('img'); img.onerror = () => img.remove(); img.src = `${DD}/cdn/img/champion/loading/${id}_0.jpg`;
+  champGrid.appendChild(el); champEls[id] = el; renderChamp(id);
+}
+$('#heroArt').style.backgroundImage = `url(${DD}/cdn/img/champion/splash/Yasuo_0.jpg)`;
+
+// carrossel 3D de skins
+const ringEl = $('#ring'), carEl = $('#carousel');
+const RG = { angle: 0, vel: 0, drag: false, lx: 0, R: 300, items: [] };
+function buildRing() {
+  const lists = Object.keys(CHAMPS).map(id => (CHAMPS[id].skins || [{ num: 0, name: 'default' }]).map(s => ({ id, num: s.num, name: s.name === 'default' ? id : s.name })));
+  let items = [];
+  const max = Math.max(...lists.map(l => l.length));
+  for (let i = 0; i < max; i++) for (const l of lists) if (l[i]) items.push(l[i]);
+  while (items.length < 6) items = items.concat(items.slice(0, 6 - items.length));
+  ringEl.innerHTML = '';
+  RG.items = items.map(it => {
+    const el = document.createElement('div'); el.className = 'skin';
+    const img = new Image(); img.alt = ''; img.onerror = () => img.remove(); img.src = `${DD}/cdn/img/champion/loading/${it.id}_${it.num}.jpg`;
+    const sp = document.createElement('span'); sp.textContent = it.name;
+    el.append(img, sp); ringEl.appendChild(el); return el;
+  });
+  layoutRing();
+}
+function layoutRing() {
+  const n = RG.items.length; if (!n) return;
+  const w = RG.items[0].offsetWidth || 150;
+  RG.R = Math.round(w / 2 / Math.tan(Math.PI / n)) + 24;
+  RG.items.forEach((el, i) => { el.dataset.a = i * 360 / n; el.style.transform = `rotateY(${i * 360 / n}deg) translateZ(${RG.R}px)`; });
+}
+carEl.addEventListener('pointerdown', e => { RG.drag = true; RG.lx = e.clientX; RG.vel = 0; try { carEl.setPointerCapture(e.pointerId); } catch (_) {} });
+carEl.addEventListener('pointermove', e => { if (!RG.drag) return; const dx = (e.clientX - RG.lx) * .35; RG.lx = e.clientX; RG.angle += dx; RG.vel = dx; });
+carEl.addEventListener('pointerup', () => RG.drag = false);
+carEl.addEventListener('pointercancel', () => RG.drag = false);
+function ringUpdate(dt) {
+  if (!RG.drag) { RG.vel *= Math.pow(.95, dt); RG.angle += (RG.vel + (reduce ? 0 : .12)) * dt; }
+  ringEl.style.transform = `translateZ(${-RG.R}px) rotateY(${RG.angle.toFixed(2)}deg)`;
+  for (const el of RG.items) { const a = (+el.dataset.a + RG.angle) * Math.PI / 180; el.style.opacity = (.25 + .75 * Math.max(0, Math.cos(a))).toFixed(2); }
+}
+buildRing();
+addEventListener('resize', layoutRing);
+
+function cleanHTML(html) { return (new DOMParser().parseFromString(html, 'text/html').body.textContent || '').replace(/\s+/g, ' ').trim(); }
+(async () => {
+  try {
+    const v = (await (await fetch(`${DD}/api/versions.json`)).json())[0];
+    for (const id of Object.keys(CHAMPS)) {
+      const d = (await (await fetch(`${DD}/cdn/${v}/data/pt_BR/champion/${id}.json`)).json()).data[id];
+      const c = CHAMPS[id]; c.title = d.title;
+      [d.passive, ...d.spells].forEach((s, i) => {
+        let txt = cleanHTML(s.description); if (txt.length > 230) txt = txt.slice(0, 227).trimEnd() + '…';
+        c.spells[i][1] = s.name; c.spells[i][2] = txt;
+        c.spells[i][3] = `${DD}/cdn/${v}/img/${i ? 'spell' : 'passive'}/${s.image.full}`;
+      });
+      c.skins = d.skins.slice(0, 7).map(s => ({ num: s.num, name: s.name }));
+      renderChamp(id);
+    }
+    buildRing();
+  } catch (e) { /* sem internet: fica com os dados embutidos */ }
+})();
+
+// ---------- CRUZEIRO: Cruzeiro do Sul em 3D ----------
+const sky = $('#sky');
+[[50, 12, 58, 60], [20, 44, 50, 30], [80, 40, 48, 10], [47, 88, 62, 45], [65, 62, 32, 80]].forEach(([x, y, s, z], i) => {
+  const st = document.createElement('div'); st.className = 'star'; st.innerHTML = '<i></i>';
+  x = 50 + (x - 50) * .68; y = 50 + (y - 50) * .68; s = Math.round(s * .78);
+  st.style.cssText = `left:${x}%;top:${y}%;width:${s}px;height:${s}px;transform:translate(-50%,-50%) translateZ(${z}px)`;
+  st.onclick = e => { e.stopPropagation(); st.classList.remove('tw'); void st.offsetWidth; st.classList.add('tw'); tone([523, 587, 659, 784, 880][i], .4, 'triangle', .08); };
+  sky.appendChild(st);
+});
+$('#zeiro').onclick = cruzeiroParty;
+
+// ---------- 3D: tilt do nome e dos cards ----------
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const hero = { x: 0, y: 0, tx: 0, ty: 0 };
+addEventListener('pointermove', e => { hero.tx = (e.clientY / H - .5) * -18; hero.ty = (e.clientX / W - .5) * 28; });
+const tilts = [...document.querySelectorAll('.card')].map(el => {
+  el.classList.add('tilt');
+  const s = { el, x: 0, y: 0, g: 0, tx: 0, ty: 0, tg: 0 };
+  el.addEventListener('pointermove', e => {
+    const r = el.getBoundingClientRect(), px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
+    s.ty = (px - .5) * 16; s.tx = (.5 - py) * 12; s.tg = .35;
+    el.style.setProperty('--gx', px * 100 + '%'); el.style.setProperty('--gy', py * 100 + '%');
+  });
+  el.addEventListener('pointerleave', () => { s.tx = s.ty = s.tg = 0; });
+  return s;
+});
+function tiltUpdate(dt) {
+  if (reduce) return;
+  const k = 1 - Math.pow(.9, dt);
+  hero.x += (hero.tx - hero.x) * k; hero.y += (hero.ty - hero.y) * k;
+  nameWrap.style.transform = `rotateX(${(hero.x + Math.sin(T * .9) * 3).toFixed(2)}deg) rotateY(${(hero.y + Math.sin(T * .6) * 5).toFixed(2)}deg)`;
+  sky.style.transform = `rotateX(${(hero.x * .8).toFixed(2)}deg) rotateY(${(Math.sin(T * .7) * 25 + hero.y * .6).toFixed(2)}deg)`;
+  for (const s of tilts) {
+    if (Math.abs(s.tx - s.x) + Math.abs(s.ty - s.y) + Math.abs(s.tg - s.g) < .01) continue;
+    s.x += (s.tx - s.x) * k; s.y += (s.ty - s.y) * k; s.g += (s.tg - s.g) * k;
+    s.el.style.setProperty('--rx', s.x.toFixed(2) + 'deg');
+    s.el.style.setProperty('--ry', s.y.toFixed(2) + 'deg');
+    s.el.style.setProperty('--ga', s.g.toFixed(3));
+  }
+}
+
 // ---------- loop ----------
 for (let i = 0; i < 45; i++) { const p = makePetal(0, 0, false); petals.push(p); }
 addEventListener('resize', resize);
@@ -859,7 +1226,7 @@ updateHUD();
 let last = performance.now();
 function frame(now) {
   const dt = Math.min(3, (now - last) / 16.667); last = now; T += dt / 60;
-  bgUpdate(dt); bgDraw(); gUpdate(dt); gDraw();
+  bgUpdate(dt); bgDraw(); gUpdate(dt); gDraw(); tiltUpdate(dt); ringUpdate(dt);
   requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame);
